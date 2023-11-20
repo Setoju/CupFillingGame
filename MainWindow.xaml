@@ -1,0 +1,24 @@
+﻿<Window x:Class="CupFilling.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:CupFilling"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800" WindowState="Maximized">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="39*"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Button Name="Level1Button" Height="25" Width="75" Margin="210,399,495,10" Click="Level1Button_Click">
+            Level 1
+        </Button>
+        <Button Name="Level2Button" Height="25" Width="75" Margin="362,399,342,10" Click="Level2Button_Click">
+            Level 2
+        </Button>
+        <Button Name="Level3Button" Height="25" Width="75" Margin="515,399,190,10" Click="Level3Button_Click">
+            Level 3
+        </Button>
+    </Grid>
+</Window>
