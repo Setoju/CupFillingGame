@@ -47,6 +47,8 @@ namespace CupFilling
 
         private void CreateFallingBall(Point clickPosition)
         {
+            remainingWaterText.Text = $"Remaining Water: {thirdWaterSource.GetWaterAmount()}";
+
             if (thirdWaterSource.GetWaterAmount() == 0)
             {
                 MessageBox.Show("You failed");

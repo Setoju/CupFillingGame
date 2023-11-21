@@ -7,6 +7,9 @@
         mc:Ignorable="d"
         Title="Level3Window" Height="1920" Width="1080" WindowState="Maximized">
     <Grid>
+        <StackPanel>
+            <TextBlock x:Name="remainingWaterText" Text="{Binding Path=WaterAmount}"/>
+        </StackPanel>
         <Canvas Name="ThirdLevelCanvas" Height="1900" Width="700" Background="LightGray"/>
     </Grid>
 </Window>
