@@ -5,11 +5,15 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CupFilling"
         mc:Ignorable="d"
-        Title="Level1Window" Height="450" Width="800" WindowState="Maximized">
+        Title="Level1Window" Height="1920" Width="1080" WindowState="Maximized">
     <Grid>
-        <Button Name="NextLevelButton" Content="Next Level"
+        <StackPanel>
+            <TextBlock x:Name="remainingWaterText" Text="{Binding Path=WaterAmount}"/>
+        </StackPanel>
+        <Button Name="NextLevelButton" Content="Next Level" Height="50" Width="100"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Bottom"
-                Margin="10" Click="NextLevelButton_Click" />
+                Margin="50" Click="NextLevelButton_Click" />
+        <Canvas Name="FirstLevelCanvas" Height="1900" Width="700" Background="LightGray"/>
     </Grid>
 </Window>

@@ -5,19 +5,15 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CupFilling"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800" WindowState="Maximized">
+        Title="MainWindow" Height="600" Width="800" WindowState="Maximized">
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="39*"/>
-            <ColumnDefinition/>
-        </Grid.ColumnDefinitions>
-        <Button Name="Level1Button" Height="25" Width="75" Margin="210,399,495,10" Click="Level1Button_Click">
+        <Button Name="Level1Button" Height="25" Width="75" Margin="220,516,505,43" Click="Level1Button_Click">
             Level 1
         </Button>
-        <Button Name="Level2Button" Height="25" Width="75" Margin="362,399,342,10" Click="Level2Button_Click">
+        <Button Name="Level2Button" Height="25" Width="75" Margin="362,516,362,43" Click="Level2Button_Click">
             Level 2
         </Button>
-        <Button Name="Level3Button" Height="25" Width="75" Margin="515,399,190,10" Click="Level3Button_Click">
+        <Button Name="Level3Button" Height="25" Width="75" Margin="506,516,219,43" Click="Level3Button_Click">
             Level 3
         </Button>
     </Grid>

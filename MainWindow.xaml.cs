@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.Emit;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -59,7 +60,10 @@ namespace CupFilling
         {
             _waterAmount= waterAmount;
         }
-
+        public int GetWaterAmount()
+        {
+            return _waterAmount;
+        }
         public void ReleaseWater()
         {
             _waterAmount -= 1;
@@ -69,25 +73,38 @@ namespace CupFilling
 
     public class Cup
     {
-        private Point[] _position;
+        private PointCollection _position;
         private int _capacity;
         private int _currentWaterAmount;
 
-        public Cup(Point[] position, int capacity, int currentWaterAmount)
+        public Cup(PointCollection position, int capacity)
         {
             _position = position;
             _capacity = capacity;
-            _currentWaterAmount = currentWaterAmount;
+            _currentWaterAmount = 0;
+        }
+        public Polyline ShowCup()
+        {
+            return new Polyline
+            {
+                Stroke = Brushes.Black,
+                StrokeThickness = 2,
+                Points = _position
+            };
         }
 
-        public void Fill()
+        public bool FillIfNotFull()
         {
             // We should call this method every time the ball drops into the cup
             if(_currentWaterAmount < _capacity)
+            {
                 _currentWaterAmount += 1;
+                return true;
+            }                            
             else
             {
-                // Write logic for the end of the game when the cup is full
+                MessageBox.Show("Congratulations, you won!");                
+                return false;
             }
         }
     }
