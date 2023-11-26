@@ -20,6 +20,7 @@ namespace CupFilling
     /// </summary>
     public partial class Level1Window : Window
     {
+        private List<Wall> walls = new List<Wall>();
         private static PointCollection cupPoints = new PointCollection
             {
                 new Point(390, 700),
@@ -35,6 +36,7 @@ namespace CupFilling
             InitializeComponent();
                                               
             FirstLevelCanvas.Children.Add(firstLevelCup.ShowCup());
+            AddWalls();
             FirstLevelCanvas.MouseLeftButtonDown += OnCanvasClick;
         }
         private void OnCanvasClick(object sender, MouseButtonEventArgs e)
@@ -79,10 +81,20 @@ namespace CupFilling
 
             timer.Tick += (s, e) =>
             {
-                double newY = Canvas.GetTop(ball) + 20; // Adjust the falling speed as needed
+                double newY = Canvas.GetTop(ball) + 5; // Adjust the falling speed as needed
                 //!!!                                                        
                 // Maybe when the ball is outside of the window we should stop its timer to optimize the game
                 //!!!^
+
+                foreach (var wall in walls)
+                {
+                    if (wall.IsColliding(ball))
+                    {                        
+                        timer.Stop();
+                        return;
+                    }
+                }
+
                 if (newY + ball.Height >= 800 && Canvas.GetLeft(ball) >= 310 && Canvas.GetLeft(ball) + ball.Width <= 390)
                 {
                     if (!firstLevelCup.FillIfNotFull())
@@ -122,6 +134,26 @@ namespace CupFilling
             Level2Window.Level2 startNext = new Level2Window.Level2();
             this.Close();
             startNext.StartLevel();
+        }
+        private void AddWalls()
+        {            
+            Rectangle wallRectangle = new Rectangle
+            {
+                Width = 100,
+                Height = 5,
+                Fill = Brushes.Gray
+            };
+
+            Canvas.SetLeft(wallRectangle, 200);
+            Canvas.SetTop(wallRectangle, 600);
+
+            RotateTransform rotateTransform = new RotateTransform(45); // Set the desired angle
+            wallRectangle.RenderTransform = rotateTransform;
+
+            Wall diagonalWall = new Wall(wallRectangle, 45); // Angle in degrees
+            walls.Add(diagonalWall);
+
+            FirstLevelCanvas.Children.Add(diagonalWall.GetPosition());
         }
     }
 }

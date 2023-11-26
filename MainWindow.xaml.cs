@@ -112,12 +112,31 @@ namespace CupFilling
 
     public class Wall
     {
-        private Point[] _position;
+        private Rectangle _position;
+        private double _angle;
 
-        public bool IsColliding()
+        public Wall(Rectangle position, double angle)
         {
-            // Write logic for checking if the balls are colliding with the wall, if they are they should bounce
-            return false;
+            _position = position;
+            _angle = angle;
         }
+        public bool IsColliding(Ellipse ball)
+        {
+            Rect ballRect = new Rect(Canvas.GetLeft(ball), Canvas.GetTop(ball), ball.Width, ball.Height);
+            Rect wallRect = new Rect(Canvas.GetLeft(_position), Canvas.GetTop(_position), _position.Width, _position.Height);
+
+            Point wallRotationCenter = new Point(Canvas.GetLeft(_position) + _position.Width / 2, Canvas.GetTop(_position) + _position.Height / 2);
+            RotateTransform wallRotation = new RotateTransform(-_angle, wallRotationCenter.X, wallRotationCenter.Y);           
+
+            // Transform the rotated wall rectangle
+            wallRect = wallRotation.TransformBounds(wallRect);
+
+
+            return ballRect.IntersectsWith(wallRect);
+        }
+        public Rectangle GetPosition()
+        {
+            return _position;
+        }        
     }
 }
