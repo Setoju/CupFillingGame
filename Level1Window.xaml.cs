@@ -63,17 +63,17 @@ namespace CupFilling
                 Fill = Brushes.Blue
             };
 
-            // Set the initial position of the ball to the click position
+            // Seting the initial position of the ball
             Canvas.SetLeft(ball, clickPosition.X - ball.Width / 2);
 
-            // Set the position of the ball above the previous ball
+            // Seting the position of the ball above the previous ball
             Canvas.SetTop(ball, previousBallTop);
 
             FirstLevelCanvas.Children.Add(ball);
 
             firstWaterSource.ReleaseWater();
 
-            // Start a DispatcherTimer to animate the falling of the ball
+            // Starting a DispatcherTimer to animate the falling of the ball
             DispatcherTimer timer = new DispatcherTimer
             {
                 Interval = TimeSpan.FromMilliseconds(1)
@@ -81,39 +81,39 @@ namespace CupFilling
 
             timer.Tick += (s, e) =>
             {
-                double newY = Canvas.GetTop(ball) + 5; // Adjust the falling speed as needed
+                double newY = Canvas.GetTop(ball) + 5; // Adjusting the ball falling speed
                 //!!!                                                        
                 // Maybe when the ball is outside of the window we should stop its timer to optimize the game
                 //!!!^
-
+                // Checking if the ball is colliding with any wall
                 foreach (var wall in walls)
-                {
+                {                                     
                     if (wall.IsColliding(ball))
-                    {                        
+                    {
                         timer.Stop();
                         return;
                     }
                 }
-
+                // Checking if the ball has reached the cup 
                 if (newY + ball.Height >= 800 && Canvas.GetLeft(ball) >= 310 && Canvas.GetLeft(ball) + ball.Width <= 390)
                 {
                     if (!firstLevelCup.FillIfNotFull())
+                    {
                         this.Close();
+                    }                        
                     timer.Stop();
                 }
                 else
                 {
-                    // Move the ball down                        
+                    // Moving the ball down                        
                     Canvas.SetTop(ball, newY);
-                }
-                // Check if the ball has reached the cup                
+                }                               
             };
 
             timer.Start();
 
-            // Update the previousBallTop for the next ball
-            previousBallTop += ball.Height + 1; // You can adjust the gap between balls as needed
-        }
+            // ???????
+            previousBallTop += ball.Height;
 
         public class Level1 : Level
         {
@@ -135,6 +135,7 @@ namespace CupFilling
             this.Close();
             startNext.StartLevel();
         }
+        // Method for adding walls to the canvas
         private void AddWalls()
         {            
             Rectangle wallRectangle = new Rectangle
@@ -147,13 +148,16 @@ namespace CupFilling
             Canvas.SetLeft(wallRectangle, 200);
             Canvas.SetTop(wallRectangle, 600);
 
-            RotateTransform rotateTransform = new RotateTransform(45); // Set the desired angle
+            RotateTransform rotateTransform = new RotateTransform(45); // Wall angle
             wallRectangle.RenderTransform = rotateTransform;
 
-            Wall diagonalWall = new Wall(wallRectangle, 45); // Angle in degrees
+            Wall diagonalWall = new Wall(wallRectangle, 45);
             walls.Add(diagonalWall);
-
-            FirstLevelCanvas.Children.Add(diagonalWall.GetPosition());
-        }
+            
+            foreach (Wall wall in walls)
+            {
+                FirstLevelCanvas.Children.Add(wall.GetPosition());
+            }            
+        }        
     }
 }

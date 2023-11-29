@@ -66,8 +66,7 @@ namespace CupFilling
         }
         public void ReleaseWater()
         {
-            _waterAmount -= 1;
-            // Add logic for dropping balls from the position of the mouse
+            _waterAmount -= 1;            
         }
     }
 
@@ -95,7 +94,7 @@ namespace CupFilling
 
         public bool FillIfNotFull()
         {
-            // We should call this method every time the ball drops into the cup
+            // We should call this method every time the ball falls into the cup
             if(_currentWaterAmount < _capacity)
             {
                 _currentWaterAmount += 1;
@@ -122,21 +121,74 @@ namespace CupFilling
         }
         public bool IsColliding(Ellipse ball)
         {
-            Rect ballRect = new Rect(Canvas.GetLeft(ball), Canvas.GetTop(ball), ball.Width, ball.Height);
-            Rect wallRect = new Rect(Canvas.GetLeft(_position), Canvas.GetTop(_position), _position.Width, _position.Height);
+            double angleInRadians = _angle * Math.PI / 180.0;
 
-            Point wallRotationCenter = new Point(Canvas.GetLeft(_position) + _position.Width / 2, Canvas.GetTop(_position) + _position.Height / 2);
-            RotateTransform wallRotation = new RotateTransform(-_angle, wallRotationCenter.X, wallRotationCenter.Y);           
+            Rect rectBounds = _position.TransformToAncestor((Visual)_position.Parent)
+                .TransformBounds(new Rect(_position.RenderSize));
 
-            // Transform the rotated wall rectangle
-            wallRect = wallRotation.TransformBounds(wallRect);
+            Rect ellipseBounds = ball.TransformToAncestor((Visual)ball.Parent)
+                .TransformBounds(new Rect(ball.RenderSize));
 
+            // Check for intersection of bounding rectangles
+            if (!rectBounds.IntersectsWith(ellipseBounds))
+            {
+                return false;
+            }
 
-            return ballRect.IntersectsWith(wallRect);
+            // Check for more precise collision using geometric calculations
+            Point rectCenter = new Point(rectBounds.X + rectBounds.Width / 2, rectBounds.Y + rectBounds.Height / 2);
+            Point ellipseCenter = new Point(ellipseBounds.X + ellipseBounds.Width / 2, ellipseBounds.Y + ellipseBounds.Height / 2);
+
+            double distanceX = Math.Abs(rectCenter.X - ellipseCenter.X);
+            double distanceY = Math.Abs(rectCenter.Y - ellipseCenter.Y);
+
+            double halfRectWidth = rectBounds.Width / 2;
+            double halfRectHeight = rectBounds.Height / 2;
+
+            double radiusX = ellipseBounds.Width / 2;
+            double radiusY = ellipseBounds.Height / 2;
+
+            // Rotate the point of the rectangle center
+            double rotatedX = Math.Cos(angleInRadians) * (rectCenter.X - rectBounds.X) -
+                              Math.Sin(angleInRadians) * (rectCenter.Y - rectBounds.Y) +
+                              rectBounds.X;
+
+            double rotatedY = Math.Sin(angleInRadians) * (rectCenter.X - rectBounds.X) +
+                              Math.Cos(angleInRadians) * (rectCenter.Y - rectBounds.Y) +
+                              rectBounds.Y;
+
+            // Check if the point is on the other side of the rotated rectangle
+            if (rotatedX < rectBounds.X || rotatedX > rectBounds.X + rectBounds.Width ||
+                rotatedY < rectBounds.Y || rotatedY > rectBounds.Y + rectBounds.Height)
+            {
+                return false;
+            }
+
+            double rotatedDistanceX = Math.Abs(rotatedX - ellipseCenter.X);
+            double rotatedDistanceY = Math.Abs(rotatedY - ellipseCenter.Y);
+
+            if (rotatedDistanceX > (halfRectWidth + radiusX) || rotatedDistanceY > (halfRectHeight + radiusY))
+            {
+                return false;
+            }
+
+            if (rotatedDistanceX <= halfRectWidth || rotatedDistanceY <= halfRectHeight)
+            {
+                return true;
+            }
+
+            double cornerDistanceSquared = Math.Pow(rotatedDistanceX - halfRectWidth, 2) +
+                                           Math.Pow(rotatedDistanceY - halfRectHeight, 2);
+
+            return cornerDistanceSquared <= Math.Pow(radiusX, 2);
         }
         public Rectangle GetPosition()
         {
             return _position;
         }        
+        public double GetAngle()
+        {
+            return _angle;
+        }
     }
 }
