@@ -14,6 +14,17 @@
                 HorizontalAlignment="Right"
                 VerticalAlignment="Bottom"
                 Margin="50" Click="NextLevelButton_Click" />
-        <Canvas Name="FirstLevelCanvas" Height="1900" Width="700" Background="LightGray"/>
+        <Canvas Name="FirstLevelCanvas" Height="1900" Width="700" Background="LightGray">
+            <Rectangle Tag="wall"  Width="100" Height="8" Fill="Gray" Canvas.Left="159" Canvas.Top="664" HorizontalAlignment="Left" VerticalAlignment="Top">
+                <Rectangle.RenderTransform>
+                    <RotateTransform Angle="45"/>
+                </Rectangle.RenderTransform>
+            </Rectangle>
+            <Rectangle Tag="wall"  Width="100" Height="8" Fill="Gray" Canvas.Left="397" Canvas.Top="478" HorizontalAlignment="Left" VerticalAlignment="Top">
+                <Rectangle.RenderTransform>
+                    <RotateTransform Angle="135"/>
+                </Rectangle.RenderTransform>
+            </Rectangle>
+        </Canvas>
     </Grid>
 </Window>
