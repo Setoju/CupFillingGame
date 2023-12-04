@@ -9,7 +9,10 @@
     <Grid>
         <StackPanel>
             <TextBlock x:Name="remainingWaterText" Text="{Binding Path=WaterAmount}"/>
+            <ProgressBar Name="cupFilling" Width="200" Height="20" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="100, 0" Minimum="0" Maximum="10"/>
+            <TextBlock Name="progress" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="170, 0"/>
         </StackPanel>
+
         <Button Name="NextLevelButton" Content="Next Level" Height="50" Width="100"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Bottom"

@@ -22,7 +22,7 @@ namespace CupFilling
     /// </summary>
     public partial class Level1Window : Window
     {
-        //private List<Wall> walls = new List<Wall>();
+        //private List<Wall> walls = new List<Wall>();        
         private bool gameEnded = false;
         private static PointCollection cupPoints = new PointCollection
             {
@@ -37,8 +37,10 @@ namespace CupFilling
         public Level1Window()
         {
             InitializeComponent();
-                                              
-            FirstLevelCanvas.Children.Add(firstLevelCup.ShowCup());            
+                                                 
+            FirstLevelCanvas.Children.Add(firstLevelCup.ShowCup());
+            progress.Text = $"Filled: {cupFilling.Value}/10";
+            remainingWaterText.Text = $"Remaining Water: 15";
             //AddWalls();
             FirstLevelCanvas.MouseLeftButtonDown += OnCanvasClick;
 
@@ -46,15 +48,11 @@ namespace CupFilling
         private void OnCanvasClick(object sender, MouseButtonEventArgs e)
         {
             CreateFallingBall(e.GetPosition(FirstLevelCanvas));
-        }
-
-        private double previousBallTop = 0;
+        }        
 
         private void CreateFallingBall(Point clickPosition)
-        {
-            remainingWaterText.Text = $"Remaining Water: {firstWaterSource.GetWaterAmount()}";
-
-            if (firstWaterSource.GetWaterAmount() < 0)
+        {                        
+            if (firstWaterSource.GetWaterAmount() == 0)
             {
                 MessageBox.Show("You failed");
                 this.Close();
@@ -68,15 +66,13 @@ namespace CupFilling
             };
 
             // Seting the initial position of the ball
-            Canvas.SetLeft(ball, clickPosition.X - ball.Width / 2);
-
-            // Seting the position of the ball above the previous ball
-            Canvas.SetTop(ball, previousBallTop);
+            Canvas.SetLeft(ball, clickPosition.X - ball.Width / 2);            
+            Canvas.SetTop(ball, 0);
 
             FirstLevelCanvas.Children.Add(ball);
 
             firstWaterSource.ReleaseWater();
-
+            remainingWaterText.Text = $"Remaining Water: {firstWaterSource.GetWaterAmount()}";
             // Starting a DispatcherTimer to animate the falling of the ball
             DispatcherTimer timer = new DispatcherTimer
             {
@@ -86,50 +82,17 @@ namespace CupFilling
             timer.Tick += (s, e) =>
             {
                 double newY = Canvas.GetTop(ball) + 5; // Adjusting the ball falling speed
-                double newX = Canvas.GetLeft(ball);    //!!!                                                        
-                                                       // Maybe when the ball is outside of the window we should stop its timer to optimize the game
-                                                       //!!!^
-                // Checking if the ball is colliding with any wall                                                      
-                Rect ballBounds = new Rect(Canvas.GetLeft(ball), Canvas.GetTop(ball), ball.Width, ball.Height);
-                foreach (var x in FirstLevelCanvas.Children.OfType<Rectangle>())
-                {
-                    if ((string)x.Tag == "wall")
-                    {
-                        Point ballCenter = new Point(ballBounds.X + ballBounds.Width / 2, ballBounds.Y + ballBounds.Height / 2);
+                double newX = Canvas.GetLeft(ball);               
 
-                        // Get the rotation angle of the wall
-                        var rotateTransform = x.RenderTransform as RotateTransform;
-                        double angle = rotateTransform != null ? -rotateTransform.Angle : 0;
-
-                        // Calculate the rotated position of the ball center
-                        double radians = Math.PI * angle / 180.0;
-                        double rotatedX = Math.Cos(radians) * (ballCenter.X - Canvas.GetLeft(x)) - Math.Sin(radians) * (ballCenter.Y - Canvas.GetTop(x)) + Canvas.GetLeft(x);
-                        double rotatedY = Math.Sin(radians) * (ballCenter.X - Canvas.GetLeft(x)) + Math.Cos(radians) * (ballCenter.Y - Canvas.GetTop(x)) + Canvas.GetTop(x);
-
-                        // Create a rotated bounding box for the ball
-                        Rect rotatedBallBounds = new Rect(rotatedX - ballBounds.Width / 2, rotatedY - ballBounds.Height / 2, ballBounds.Width, ballBounds.Height);
-
-                        // Check for intersection between the rotated ball and the rotated wall
-                        if (rotatedBallBounds.IntersectsWith(new Rect(Canvas.GetLeft(x), Canvas.GetTop(x), x.Width, x.Height)))
-                        {
-                            if (rotateTransform.Angle == 45)
-                            {
-                                newX += 5;
-                            }
-                            else if(rotateTransform.Angle == 135)
-                            {
-                                newX -= 5;
-                            }                            
-                            // Assuming you want to stop the timer immediately upon collision
-                        }
-                    }
-                }
+                // Changing the movement of the in case it collides with the wall
+                newX += MainWindow.CollisionCheck(FirstLevelCanvas, ball);                
                 // Checking if the ball has reached the cup 
                 if (newY + ball.Height >= 800 && Canvas.GetLeft(ball) >= 310 && Canvas.GetLeft(ball) + ball.Width <= 390)
                 {
+                    cupFilling.Value += 1;
+                    progress.Text = $"Filled: {cupFilling.Value}/10";
                     if (!firstLevelCup.FillIfNotFull())
-                    {
-                        timer.Stop();
+                    {                        
                         if (!gameEnded)
                         {
                             gameEnded = true;
@@ -156,10 +119,7 @@ namespace CupFilling
                 }
             };
 
-            timer.Start();
-
-            // ???????
-            previousBallTop += ball.Height;
+            timer.Start();          
         }
 
         public class Level1 : Level

@@ -20,6 +20,7 @@ namespace CupFilling
     /// </summary>
     public partial class Level3Window : Window
     {
+        private bool gameEnded = false;
         private static PointCollection cupPoints = new PointCollection
             {
                 new Point(200, 700),
@@ -41,9 +42,7 @@ namespace CupFilling
         private void OnCanvasClick(object sender, MouseButtonEventArgs e)
         {
             CreateFallingBall(e.GetPosition(ThirdLevelCanvas));
-        }
-
-        private double previousBallTop = 0;
+        }   
 
         private void CreateFallingBall(Point clickPosition)
         {
@@ -62,11 +61,9 @@ namespace CupFilling
                 Fill = Brushes.Blue
             };
 
-            // Set the initial position of the ball to the click position
+            // Seting the initial position of the ball to the click position
             Canvas.SetLeft(ball, clickPosition.X - ball.Width / 2);
-
-            // Set the position of the ball above the previous ball
-            Canvas.SetTop(ball, previousBallTop);
+            Canvas.SetTop(ball, 0);
 
             ThirdLevelCanvas.Children.Add(ball);
 
@@ -80,27 +77,34 @@ namespace CupFilling
 
             timer.Tick += (s, e) =>
             {
-                double newY = Canvas.GetTop(ball) + 20; // Adjust the falling speed as needed
+                double newY = Canvas.GetTop(ball) + 5; // Adjust the falling speed as needed
+                double newX = Canvas.GetLeft(ball);
+
+                newX += MainWindow.CollisionCheck(ThirdLevelCanvas, ball);
 
                 // Check if the ball has reached the cup
                 if (newY + ball.Height >= 800 && Canvas.GetLeft(ball) >= 120 && Canvas.GetLeft(ball) + ball.Width <= 200)
                 {
                     // Ball is inside the cup, stop the timer and remove the ball
                     if (!thirdLevelCup.FillIfNotFull())
-                        this.Close();
-                    timer.Stop();
+                    {
+                        if (!gameEnded)
+                        {
+                            gameEnded = true;
+
+                            MessageBox.Show("Congratulation, you've completed all levels!!! Go treat yourself ;)");
+                        }
+                    }                                          
                 }
                 else
                 {
                     // Move the ball down
                     Canvas.SetTop(ball, newY);
+                    Canvas.SetLeft(ball, newX);
                 }
             };
 
-            timer.Start();
-
-            // Update the previousBallTop for the next ball
-            previousBallTop += ball.Height + 1; // You can adjust the gap between balls as needed
+            timer.Start();           
         }
         public class Level3 : Level
         {
