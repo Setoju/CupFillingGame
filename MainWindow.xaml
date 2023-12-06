@@ -5,16 +5,92 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CupFilling"
         mc:Ignorable="d"
+        Icon="H:\Project\CupFilling\images\icon.ico"
         Title="MainWindow" Height="600" Width="800" WindowState="Maximized">
+
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="FontFamily.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+            <Style x:Key="FocusVisual">
+                <Setter Property="Control.Template">
+                    <Setter.Value>
+                        <ControlTemplate>
+                            <Rectangle Margin="2" StrokeDashArray="1 2" Stroke="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" SnapsToDevicePixels="true" StrokeThickness="1"/>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+            <SolidColorBrush x:Key="Button.Static.Background" Color="#FFDDDDDD"/>
+            <SolidColorBrush x:Key="Button.Static.Border" Color="#FF707070"/>
+            <SolidColorBrush x:Key="Button.MouseOver.Background" Color="#FFBEE6FD"/>
+            <SolidColorBrush x:Key="Button.MouseOver.Border" Color="#FF3C7FB1"/>
+            <SolidColorBrush x:Key="Button.Pressed.Background" Color="#FFC4E5F6"/>
+            <SolidColorBrush x:Key="Button.Pressed.Border" Color="#FF2C628B"/>
+            <SolidColorBrush x:Key="Button.Disabled.Background" Color="#FFF4F4F4"/>
+            <SolidColorBrush x:Key="Button.Disabled.Border" Color="#FFADB2B5"/>
+            <SolidColorBrush x:Key="Button.Disabled.Foreground" Color="#FF838383"/>
+            <Style TargetType="{x:Type Button}">
+                <Setter Property="FocusVisualStyle" Value="{StaticResource FocusVisual}"/>
+                <Setter Property="Background" Value="{StaticResource Button.Static.Background}"/>
+                <Setter Property="BorderBrush" Value="{StaticResource Button.Static.Border}"/>
+                <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+                <Setter Property="BorderThickness" Value="0"/>
+                <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                <Setter Property="VerticalContentAlignment" Value="Center"/>
+                <Setter Property="Padding" Value="1"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type Button}">
+                            <Border x:Name="border" CornerRadius="20" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" SnapsToDevicePixels="true">
+                                <ContentPresenter x:Name="contentPresenter" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsDefaulted" Value="true">
+                                    <Setter Property="BorderBrush" TargetName="border" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"/>
+                                </Trigger>
+                                <Trigger Property="IsMouseOver" Value="true">
+                                    <Setter Property="Background" TargetName="border" Value="{StaticResource Button.MouseOver.Background}"/>
+                                    <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource Button.MouseOver.Border}"/>
+                                </Trigger>
+                                <Trigger Property="IsPressed" Value="true">
+                                    <Setter Property="Background" TargetName="border" Value="{StaticResource Button.Pressed.Background}"/>
+                                    <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource Button.Pressed.Border}"/>
+                                </Trigger>
+                                <Trigger Property="IsEnabled" Value="false">
+                                    <Setter Property="Background" TargetName="border" Value="{StaticResource Button.Disabled.Background}"/>
+                                    <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource Button.Disabled.Border}"/>
+                                    <Setter Property="TextElement.Foreground" TargetName="contentPresenter" Value="{StaticResource Button.Disabled.Foreground}"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+        </ResourceDictionary>
+    </Window.Resources>
+    
     <Grid>
-        <Button Name="Level1Button" Height="25" Width="75" Margin="220,516,505,43" Click="Level1Button_Click">
-            Level 1
-        </Button>
-        <Button Name="Level2Button" Height="25" Width="75" Margin="362,516,362,43" Click="Level2Button_Click">
-            Level 2
-        </Button>
-        <Button Name="Level3Button" Height="25" Width="75" Margin="506,516,219,43" Click="Level3Button_Click">
-            Level 3
-        </Button>
+        <Image Source="H:\Project\CupFilling\images\backgroundCup.jpg"/>
+        <TextBlock Text="Welcome to the Cup Filling game!" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0, 30" FontSize="32" FontFamily="{StaticResource DefaultFont}" FontWeight="Bold">
+            <TextBlock.Effect>
+                <DropShadowEffect Color="#FF64CCF1"
+                          Direction="315"
+                          ShadowDepth="2"
+                          Opacity="0.7"/>
+            </TextBlock.Effect>
+        </TextBlock>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,20">
+            <Button Name="Level1Button" Height="35" Width="90" Margin="20,5" Click="Level1Button_Click" Background="#FF64CCF1" Foreground="White" FontFamily="{StaticResource DefaultFont}" FontSize="20">
+                Level 1
+            </Button>
+            <Button Name="Level2Button" Height="35" Width="90" Margin="20, 5" Click="Level2Button_Click" Background="#FF64CCF1" Foreground="White" FontFamily="{StaticResource DefaultFont}" FontSize="20">
+                Level 2
+            </Button>
+            <Button Name="Level3Button" Height="35" Width="90" Margin="20, 5" Click="Level3Button_Click" Background="#FF64CCF1" Foreground="White" FontFamily="{StaticResource DefaultFont}" FontSize="20">
+                Level 3
+            </Button>
+        </StackPanel>
     </Grid>
 </Window>

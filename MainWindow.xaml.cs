@@ -54,19 +54,19 @@ namespace CupFilling
                     Rect ballBounds = new Rect(Canvas.GetLeft(ball), Canvas.GetTop(ball), ball.Width, ball.Height);
                     Point ballCenter = new Point(ballBounds.X + ballBounds.Width / 2, ballBounds.Y + ballBounds.Height / 2);
 
-                    // Get the rotation angle of the wall
+                    // Getting the rotation angle of the wall
                     var rotateTransform = x.RenderTransform as RotateTransform;
                     double angle = rotateTransform != null ? -rotateTransform.Angle : 0;
 
-                    // Calculate the rotated position of the ball center
+                    // Calculating the rotated position of the ball center
                     double radians = Math.PI * angle / 180.0;
                     double rotatedX = Math.Cos(radians) * (ballCenter.X - Canvas.GetLeft(x)) - Math.Sin(radians) * (ballCenter.Y - Canvas.GetTop(x)) + Canvas.GetLeft(x);
                     double rotatedY = Math.Sin(radians) * (ballCenter.X - Canvas.GetLeft(x)) + Math.Cos(radians) * (ballCenter.Y - Canvas.GetTop(x)) + Canvas.GetTop(x);
 
-                    // Create a rotated bounding box for the ball
+                    // Creating a rotated bounding box for the ball
                     Rect rotatedBallBounds = new Rect(rotatedX - ballBounds.Width / 2, rotatedY - ballBounds.Height / 2, ballBounds.Width, ballBounds.Height);
 
-                    // Check for intersection between the rotated ball and the rotated wall
+                    // Checking for intersection between the rotated ball and the rotated wall
                     if (rotatedBallBounds.IntersectsWith(new Rect(Canvas.GetLeft(x), Canvas.GetTop(x), x.Width, x.Height)))
                     {
                         if (rotateTransform.Angle == 45)
