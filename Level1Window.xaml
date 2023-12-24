@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:CupFilling"
         mc:Ignorable="d"
         Icon="H:\Project\CupFilling\images\icon.ico"        
-        Title="Level1Window" Height="1920" Width="1080" WindowState="Maximized">
+        Title="Level1" Height="1920" Width="1080" WindowState="Maximized">
 
     <Window.Resources>
         <ResourceDictionary>
@@ -72,12 +72,13 @@
     </Window.Resources>
 
     <Grid>
+        <MediaElement x:Name="buttonClick" Source="H:\Project\CupFilling\sounds\enter-button-mechanical-keyboard-14388.mp3" LoadedBehavior="Manual"/>
         <StackPanel>
             <TextBlock x:Name="remainingWaterText" Text="{Binding Path=WaterAmount}" HorizontalAlignment="Left" VerticalAlignment="Top" FontFamily="{StaticResource DefaultFont}" FontSize="20"/>
             <ProgressBar Name="cupFilling" Width="200" Height="20" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="100, 0" Minimum="0" Maximum="10"/>
             <TextBlock Name="progress" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="160, 0" FontFamily="{StaticResource DefaultFont}" FontSize="20"/>
         </StackPanel>
-        
+
         <Button Name="NextLevelButton" Content="Next Level" Height="50" Width="100"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Bottom"
@@ -107,22 +108,72 @@
                     <RotateTransform Angle="45"/>
                 </Rectangle.RenderTransform>
             </Rectangle>
-            <Rectangle Tag="wall"  Width="100" Height="5" Fill="Gray" Canvas.Left="207" Canvas.Top="154" HorizontalAlignment="Left" VerticalAlignment="Top">
+            <Rectangle Tag="wall"  Width="100" Height="5" Fill="Gray" Canvas.Left="412" Canvas.Top="375" HorizontalAlignment="Left" VerticalAlignment="Top">
                 <Rectangle.RenderTransform>
                     <RotateTransform Angle="45"/>
                 </Rectangle.RenderTransform>
             </Rectangle>
-            <Rectangle Tag="wall"  Width="100" Height="5" Fill="Gray" Canvas.Left="277" Canvas.Top="433" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Rectangle Tag="wall"  Width="100" Height="5" Fill="Gray" Canvas.Left="205" Canvas.Top="155" HorizontalAlignment="Left" VerticalAlignment="Top">
                 <Rectangle.RenderTransform>
                     <RotateTransform Angle="45"/>
                 </Rectangle.RenderTransform>
             </Rectangle>
-            <Rectangle Tag="wall"  Width="100" Height="5" Fill="Gray" Canvas.Left="456" Canvas.Top="578" HorizontalAlignment="Left" VerticalAlignment="Top">
+            <Rectangle Tag="wall"  Width="100" Height="5" Fill="Gray" Canvas.Left="275" Canvas.Top="430" HorizontalAlignment="Left" VerticalAlignment="Top">
+                <Rectangle.RenderTransform>
+                    <RotateTransform Angle="45"/>
+                </Rectangle.RenderTransform>
+            </Rectangle>
+            <Rectangle Tag="wall"  Width="100" Height="5" Fill="Gray" Canvas.Left="123" Canvas.Top="514" HorizontalAlignment="Left" VerticalAlignment="Center">
+                <Rectangle.RenderTransform>
+                    <RotateTransform Angle="45"/>
+                </Rectangle.RenderTransform>
+            </Rectangle>
+            <Rectangle Tag="wall"  Width="100" Height="5" Fill="Gray" Canvas.Left="191" Canvas.Top="582" HorizontalAlignment="Left" VerticalAlignment="Top">
+                <Rectangle.RenderTransform>
+                    <RotateTransform Angle="45"/>
+                </Rectangle.RenderTransform>
+            </Rectangle>
+            <Rectangle Tag="wall"  Width="100" Height="5" Fill="Gray" Canvas.Left="525" Canvas.Top="376" HorizontalAlignment="Left" VerticalAlignment="Top">
+                <Rectangle.RenderTransform>
+                    <RotateTransform Angle="45"/>
+                </Rectangle.RenderTransform>
+            </Rectangle>
+            <Rectangle Tag="wall"  Width="100" Height="5" Fill="Gray" Canvas.Left="445" Canvas.Top="125" HorizontalAlignment="Left" VerticalAlignment="Top">
+                <Rectangle.RenderTransform>
+                    <RotateTransform Angle="45"/>
+                </Rectangle.RenderTransform>
+            </Rectangle>
+            <Rectangle Tag="wall"  Width="100" Height="5" Fill="Gray" Canvas.Left="155" Canvas.Top="25" HorizontalAlignment="Left" VerticalAlignment="Top">
+                <Rectangle.RenderTransform>
+                    <RotateTransform Angle="45"/>
+                </Rectangle.RenderTransform>
+            </Rectangle>
+            <Rectangle Tag="wall"  Width="100" Height="5" Fill="Gray" Canvas.Left="456" Canvas.Top="578" HorizontalAlignment="Center" VerticalAlignment="Top">
+                <Rectangle.RenderTransform>
+                    <RotateTransform Angle="135"/>
+                </Rectangle.RenderTransform>
+            </Rectangle>
+            <Rectangle Tag="wall"  Width="100" Height="5" Fill="Gray" Canvas.Left="441" Canvas.Top="80" HorizontalAlignment="Left" VerticalAlignment="Top">
+                <Rectangle.RenderTransform>
+                    <RotateTransform Angle="135"/>
+                </Rectangle.RenderTransform>
+            </Rectangle>
+            <Rectangle Tag="wall"  Width="100" Height="5" Fill="Gray" Canvas.Left="329" Canvas.Top="60" HorizontalAlignment="Left" VerticalAlignment="Top">
                 <Rectangle.RenderTransform>
                     <RotateTransform Angle="135"/>
                 </Rectangle.RenderTransform>
             </Rectangle>
             <Rectangle Tag="wall"  Width="100" Height="5" Fill="Gray" Canvas.Left="278" Canvas.Top="433" HorizontalAlignment="Left" VerticalAlignment="Top">
+                <Rectangle.RenderTransform>
+                    <RotateTransform Angle="135"/>
+                </Rectangle.RenderTransform>
+            </Rectangle>
+            <Rectangle Tag="wall"  Width="100" Height="5" Fill="Gray" Canvas.Left="544" Canvas.Top="265" HorizontalAlignment="Left" VerticalAlignment="Top">
+                <Rectangle.RenderTransform>
+                    <RotateTransform Angle="135"/>
+                </Rectangle.RenderTransform>
+            </Rectangle>
+            <Rectangle Tag="wall"  Width="100" Height="5" Fill="Gray" Canvas.Left="120" Canvas.Top="423" HorizontalAlignment="Left" VerticalAlignment="Top">
                 <Rectangle.RenderTransform>
                     <RotateTransform Angle="135"/>
                 </Rectangle.RenderTransform>
@@ -152,6 +203,7 @@
                     <RotateTransform Angle="135"/>
                 </Rectangle.RenderTransform>
             </Rectangle>
+            <Image x:Name="Cup" Source="H:\Project\CupFilling\images\Cup0.jpg"  Height="150" Width="150" Canvas.Left="275" Canvas.Top="662"/>
         </Canvas>
     </Grid>
 </Window>

@@ -1,18 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Reflection.Emit;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 using static CupFilling.Level1Window;
 
@@ -22,27 +12,70 @@ namespace CupFilling
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window
-    {       
+    {
+        public static GameCompletion gameCompletion = new GameCompletion();
         public MainWindow()
         {
-            InitializeComponent();                        
-        }                       
+            InitializeComponent();
+
+            mediaElement.Play();
+        }
+        private void MediaElement_MediaEnded(object sender, RoutedEventArgs e)
+        {            
+            mediaElement.Position = TimeSpan.Zero;
+            mediaElement.Play();
+        }
         private void Level1Button_Click(object sender, RoutedEventArgs e)
         {
+            buttonClick.Position = TimeSpan.Zero;
+            buttonClick.Play();
             Level1 start = new Level1();
             start.StartLevel();
         }
 
         private void Level2Button_Click(object sender, RoutedEventArgs e)
         {
-            Level2Window.Level2 start = new Level2Window.Level2();
-            start.StartLevel();
+            if (gameCompletion[1])
+            {
+                buttonClick.Position = TimeSpan.Zero;
+                buttonClick.Play();
+                Level2Window.Level2 start = new Level2Window.Level2();
+                start.StartLevel();
+            }
+            else
+            {
+                MessageBox.Show("You have to complete previous level first!");
+            }
         }
 
         private void Level3Button_Click(object sender, RoutedEventArgs e)
         {
-            Level3Window.Level3 start = new Level3Window.Level3();
-            start.StartLevel();
+            if (gameCompletion[2])
+            {
+                buttonClick.Position = TimeSpan.Zero;
+                buttonClick.Play();
+                Level3Window.Level3 start = new Level3Window.Level3();
+                start.StartLevel();
+            }
+            else
+            {
+                MessageBox.Show("You have to complete previous level first!");
+            }
+        }
+
+        private void BonusLevelButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (gameCompletion[3])
+            {
+                buttonClick.Position = TimeSpan.Zero;
+                buttonClick.Play();
+                BonusLevelWindow.BonusLevel start = new BonusLevelWindow.BonusLevel();
+                start.StartLevel();
+            }
+            else
+            {
+                MessageBox.Show("You have to complete previous level first!");
+            }
         }
 
         public static int CollisionCheck(Canvas levelCanvas, Ellipse ball)
@@ -82,6 +115,18 @@ namespace CupFilling
             }
             return 0;
         }
+        public static bool IsBallInTheCup(Ellipse ball, Image cupImage)
+        {
+            Rect ballBounds = new Rect(Canvas.GetLeft(ball), Canvas.GetTop(ball), ball.Width, ball.Height);
+            Rect cupBounds = new Rect(Canvas.GetLeft(cupImage), Canvas.GetTop(cupImage), cupImage.Width, cupImage.Height);
+          
+            if (ballBounds.IntersectsWith(cupBounds))
+            {                
+                return true;
+            }
+
+            return false;
+        }
     }
     public abstract class Level
     {
@@ -90,6 +135,19 @@ namespace CupFilling
         public abstract void StartLevel();
         
     }       
+    public class GameCompletion
+    {
+        private bool[] _isLevelAvailable = { false, true, true, true };
+        
+        public bool this[int index]
+        {
+            get { return _isLevelAvailable[index]; }
+            set
+            {
+                _isLevelAvailable[index] = value;
+            }
+        }
+    }
     public class WaterSource
     {
         private int _waterAmount;
@@ -110,26 +168,29 @@ namespace CupFilling
 
     public class Cup
     {
-        private PointCollection _position;
+        //private PointCollection _position;
         private int _capacity;
         private int _currentWaterAmount;
 
-        public Cup(PointCollection position, int capacity)
+        public Cup(/*PointCollection position,*/ int capacity)
         {
-            _position = position;
+            //_position = position;
             _capacity = capacity;
             _currentWaterAmount = 0;
         }
-        public Polyline ShowCup()
+        //public Polyline ShowCup()
+        //{
+        //    return new Polyline
+        //    {
+        //        Stroke = Brushes.Black,
+        //        StrokeThickness = 2,
+        //        Points = _position
+        //    };
+        //}
+        public int CurrentWaterAmount
         {
-            return new Polyline
-            {
-                Stroke = Brushes.Black,
-                StrokeThickness = 2,
-                Points = _position
-            };
+            get { return _currentWaterAmount; }
         }
-
         public bool FillIfNotFull()
         {
             // We should call this method every time the ball falls into the cup
@@ -141,16 +202,7 @@ namespace CupFilling
             {
                 _currentWaterAmount += 1;
                 return true;
-            }
-            //if (_currentWaterAmount < _capacity)
-            //{
-            //    _currentWaterAmount += 1;
-            //    return true;
-            //}
-            //else
-            //{
-            //    return false;
-            //}
+            }            
         }
     }
 

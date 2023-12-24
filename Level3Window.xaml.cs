@@ -1,12 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -21,21 +15,23 @@ namespace CupFilling
     public partial class Level3Window : Window
     {
         private bool gameEnded = false;
-        private static PointCollection cupPoints = new PointCollection
-            {
-                new Point(200, 700),
-                new Point(200, 800),
-                new Point(120, 800),
-                new Point(120, 700)
+        private byte imagePointer = 0;
+        //private static PointCollection cupPoints = new PointCollection
+        //    {
+        //        new Point(200, 700),
+        //        new Point(200, 800),
+        //        new Point(120, 800),
+        //        new Point(120, 700)
 
-            };
-        private Cup thirdLevelCup = new Cup(cupPoints, 10);
+        //    };
+        private Cup thirdLevelCup = new Cup(/*cupPoints,*/ 10);
         private WaterSource thirdWaterSource = new WaterSource(15);
         public Level3Window()
         {
-            InitializeComponent();                       
+            InitializeComponent();
 
-            ThirdLevelCanvas.Children.Add(thirdLevelCup.ShowCup());
+            progress.Text = $"Filled: {cupFilling.Value}/10";
+            remainingWaterText.Text = $"Remaining Water: 15";
 
             ThirdLevelCanvas.MouseLeftButtonDown += OnCanvasClick;
         }
@@ -45,19 +41,18 @@ namespace CupFilling
         }   
 
         private void CreateFallingBall(Point clickPosition)
-        {
-            remainingWaterText.Text = $"Remaining Water: {thirdWaterSource.GetWaterAmount()}";
-
+        {            
             if (thirdWaterSource.GetWaterAmount() == 0)
             {
+                gameEnded = true;
                 MessageBox.Show("You failed");
                 this.Close();
             }
 
             Ellipse ball = new Ellipse
             {
-                Width = 5,
-                Height = 5,
+                Width = 8,
+                Height = 8,
                 Fill = Brushes.Blue
             };
 
@@ -68,11 +63,12 @@ namespace CupFilling
             ThirdLevelCanvas.Children.Add(ball);
 
             thirdWaterSource.ReleaseWater();
+            remainingWaterText.Text = $"Remaining Water: {thirdWaterSource.GetWaterAmount()}";
 
             // Start a DispatcherTimer to animate the falling of the ball
             DispatcherTimer timer = new DispatcherTimer
             {
-                Interval = TimeSpan.FromMilliseconds(1)
+                Interval = TimeSpan.FromMilliseconds(30)
             };
 
             timer.Tick += (s, e) =>
@@ -83,24 +79,36 @@ namespace CupFilling
                 newX += MainWindow.CollisionCheck(ThirdLevelCanvas, ball);
 
                 // Check if the ball has reached the cup
-                if (newY + ball.Height >= 800 && Canvas.GetLeft(ball) >= 120 && Canvas.GetLeft(ball) + ball.Width <= 200)
+                if (MainWindow.IsBallInTheCup(ball, Cup))
                 {
-                    // Ball is inside the cup, stop the timer and remove the ball
+                    timer.Stop();
+                    ThirdLevelCanvas.Children.Remove(ball);
+                    if(imagePointer < 10)
+                    {
+                        imagePointer++;
+                    }                    
+                    Cup.Source = new BitmapImage(new Uri($"H:\\Project\\CupFilling\\images\\Cup{imagePointer}.jpg", UriKind.RelativeOrAbsolute));
+                    cupFilling.Value += 1;
+                    progress.Text = $"Filled: {cupFilling.Value}/10";
                     if (!thirdLevelCup.FillIfNotFull())
                     {
                         if (!gameEnded)
                         {
                             gameEnded = true;
+                            MainWindow.gameCompletion[3] = true;
 
-                            MessageBox.Show("Congratulation, you've completed all levels!!! Go treat yourself ;)");
+                            MessageBox.Show("Congratulations, you won. Now you can play the bonus level!");
                         }
-                    }                                          
+                    }
                 }
                 else
                 {
-                    // Move the ball down
-                    Canvas.SetTop(ball, newY);
-                    Canvas.SetLeft(ball, newX);
+                    // Moving the ball down
+                    if (!gameEnded)
+                    {
+                        Canvas.SetTop(ball, newY);
+                        Canvas.SetLeft(ball, newX);
+                    }
                 }
             };
 

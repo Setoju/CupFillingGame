@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:CupFilling"
         mc:Ignorable="d"
         Icon="H:\Project\CupFilling\images\icon.ico"
-        Title="MainWindow" Height="600" Width="800" WindowState="Maximized">
+        Title="CupFilling" Height="600" Width="800" WindowState="Maximized">
 
     <Window.Resources>
         <ResourceDictionary>
@@ -72,6 +72,9 @@
     </Window.Resources>
     
     <Grid>
+        <MediaElement x:Name="mediaElement" Source="H:\Project\CupFilling\sounds\game-music-loop-7-145285.mp3"
+                      LoadedBehavior="Manual" MediaEnded="MediaElement_MediaEnded"/>
+        <MediaElement x:Name="buttonClick" Source="H:\Project\CupFilling\sounds\enter-button-mechanical-keyboard-14388.mp3" LoadedBehavior="Manual"/>
         <Image Source="H:\Project\CupFilling\images\backgroundCup.jpg"/>
         <TextBlock Text="Welcome to the Cup Filling game!" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0, 30" FontSize="32" FontFamily="{StaticResource DefaultFont}" FontWeight="Bold">
             <TextBlock.Effect>
@@ -90,6 +93,9 @@
             </Button>
             <Button Name="Level3Button" Height="35" Width="90" Margin="20, 5" Click="Level3Button_Click" Background="#FF64CCF1" Foreground="White" FontFamily="{StaticResource DefaultFont}" FontSize="20">
                 Level 3
+            </Button>
+            <Button Name="BonusLevelButton" Height="35" Width="90" Margin="20, 5" Click="BonusLevelButton_Click" Background="#FF64CCF1" Foreground="White" FontFamily="{StaticResource DefaultFont}" FontSize="20">
+                BonusLevel
             </Button>
         </StackPanel>
     </Grid>

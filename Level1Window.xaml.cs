@@ -1,17 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection.Metadata;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Media.Media3D;
 using System.Windows.Shapes;
 using System.Windows.Threading;
 
@@ -24,21 +16,22 @@ namespace CupFilling
     {
         //private List<Wall> walls = new List<Wall>();        
         private bool gameEnded = false;
-        private static PointCollection cupPoints = new PointCollection
-            {
-                new Point(390, 700),
-                new Point(390, 800),
-                new Point(310, 800),
-                new Point(310, 700)
+        private byte imagePointer = 0;
+        //private static PointCollection cupPoints = new PointCollection
+        //    {
+        //        new Point(390, 700),
+        //        new Point(390, 800),
+        //        new Point(310, 800),
+        //        new Point(310, 700)
 
-            };
-        private Cup firstLevelCup = new Cup(cupPoints, 10);
+        //    };
+        private Cup firstLevelCup = new Cup(/*cupPoints,*/ 10);
         private WaterSource firstWaterSource = new WaterSource(15);
         public Level1Window()
         {
             InitializeComponent();
                                                  
-            FirstLevelCanvas.Children.Add(firstLevelCup.ShowCup());
+            //FirstLevelCanvas.Children.Add(firstLevelCup.ShowCup());
             progress.Text = $"Filled: {cupFilling.Value}/10";
             remainingWaterText.Text = $"Remaining Water: 15";
             //AddWalls();
@@ -54,14 +47,15 @@ namespace CupFilling
         {                        
             if (firstWaterSource.GetWaterAmount() == 0)
             {
-                MessageBox.Show("You failed");
+                gameEnded = true;                
+                MessageBox.Show("You failed");                
                 this.Close();
             }
 
             Ellipse ball = new Ellipse
             {
-                Width = 5,
-                Height = 5,
+                Width = 8,
+                Height = 8,
                 Fill = Brushes.Blue
             };
 
@@ -76,46 +70,55 @@ namespace CupFilling
             // Starting a DispatcherTimer to animate the falling of the ball
             DispatcherTimer timer = new DispatcherTimer
             {
-                Interval = TimeSpan.FromMilliseconds(1)
+                Interval = TimeSpan.FromMilliseconds(30)
             };
 
             timer.Tick += (s, e) =>
             {
                 double newY = Canvas.GetTop(ball) + 5; // Adjusting the ball falling speed
-                double newX = Canvas.GetLeft(ball);               
+                double newX = Canvas.GetLeft(ball);
 
-                // Changing the movement of the in case it collides with the wall
-                newX += MainWindow.CollisionCheck(FirstLevelCanvas, ball);                
-                // Checking if the ball has reached the cup 
-                if (newY + ball.Height >= 800 && Canvas.GetLeft(ball) >= 310 && Canvas.GetLeft(ball) + ball.Width <= 390)
+                newX += MainWindow.CollisionCheck(FirstLevelCanvas, ball);
+
+                if (MainWindow.IsBallInTheCup(ball, Cup))
                 {
+                    timer.Stop();
+                    FirstLevelCanvas.Children.Remove(ball);
+                    if (imagePointer < 10)
+                    {
+                        imagePointer++;
+                    }                    
+                    Cup.Source = new BitmapImage(new Uri($"H:\\Project\\CupFilling\\images\\Cup{imagePointer}.jpg", UriKind.RelativeOrAbsolute));
                     cupFilling.Value += 1;
                     progress.Text = $"Filled: {cupFilling.Value}/10";
                     if (!firstLevelCup.FillIfNotFull())
-                    {                        
+                    {
                         if (!gameEnded)
-                        {
+                        {                            
                             gameEnded = true;
+                            MainWindow.gameCompletion[1] = true;
 
                             MessageBoxResult result = MessageBox.Show("Congratulations, you won. Do you want to play the next level?", "Confirmation", MessageBoxButton.YesNo);
-
+                            
                             if (result == MessageBoxResult.Yes)
-                            {
+                            {                               
                                 StartNextLevel();
                             }
                             else
                             {
                                 this.Close();
                             }
-                        }                        
-                    }
-                    timer.Stop();
-                }
+                        }
+                    }                    
+                }                
                 else
                 {
-                    // Moving the ball down                        
-                    Canvas.SetTop(ball, newY);
-                    Canvas.SetLeft(ball, newX);
+                    // Moving the ball down
+                    if (!gameEnded)
+                    {
+                        Canvas.SetTop(ball, newY);
+                        Canvas.SetLeft(ball, newX);
+                    }                    
                 }
             };
 
@@ -138,14 +141,23 @@ namespace CupFilling
         }
         private void NextLevelButton_Click(object sender, RoutedEventArgs e)
         {
-            StartNextLevel();
+            if (MainWindow.gameCompletion[1])
+            {
+                buttonClick.Position = TimeSpan.Zero;
+                buttonClick.Play();
+                StartNextLevel();
+            }
+            else
+            {
+                MessageBox.Show("You have to complete this level first!");
+            }
         }
         private void StartNextLevel()
         {
             Level2Window.Level2 startNext = new Level2Window.Level2();
             this.Close();
             startNext.StartLevel();
-        }
+        }       
         // Method for adding walls to the canvas
 
         //private void AddWalls()
