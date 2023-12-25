@@ -31,7 +31,7 @@ namespace CupFilling
             randomTimer.Elapsed += RandomTimerElapsed;
             SetRandomInterval();            
         }
-
+        // Placing the water at random intervals using CryptoServiceProvider
         private void RandomTimerElapsed(object sender, ElapsedEventArgs e)
         {            
             Dispatcher.Invoke(() =>
@@ -47,6 +47,7 @@ namespace CupFilling
             randomTimer.Interval = interval;
             randomTimer.Start();
         }
+        // Checking for pressing the mouse on the cup to move it by x axis
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)
         {
             if (e.ChangedButton == MouseButton.Left)
@@ -68,6 +69,7 @@ namespace CupFilling
             }
         }
        
+        // Getting random placements using CryptoServiceProvider that runs longer than Random.Next, but ensures the randomness
         private static RNGCryptoServiceProvider rngCrypto = new RNGCryptoServiceProvider();
 
         public int GetRandomNumber(int minValue, int maxValue)
@@ -107,8 +109,8 @@ namespace CupFilling
 
                 if (MainWindow.IsBallInTheCup(ball, Cup))
                 {
-                    mediaElement.Position = TimeSpan.Zero;
-                    mediaElement.Play();
+                    waterDrop.Position = TimeSpan.Zero;
+                    waterDrop.Play();
 
                     timer.Stop();
                     BonusLevelCanvas.Children.Remove(ball);
@@ -124,6 +126,8 @@ namespace CupFilling
                         if (!gameEnded)
                         {
                             gameEnded = true;
+                            levelFinished.Position = TimeSpan.Zero;
+                            levelFinished.Play();
 
                             MessageBox.Show("Congratulations, you've completed the game, now go treat yourself ;)");
                             this.Close();

@@ -72,21 +72,15 @@
     </Window.Resources>
 
     <Grid>
-        <MediaElement x:Name="buttonClick" Source="H:\Project\CupFilling\sounds\enter-button-mechanical-keyboard-14388.mp3" LoadedBehavior="Manual"/>
+        <MediaElement x:Name="waterDrop" LoadedBehavior="Manual" Source="H:\\Project\\CupFilling\\sounds\\water-drop.mp3"/>
+        <MediaElement x:Name="levelFinished" LoadedBehavior="Manual" Source="H:\Project\CupFilling\sounds\new-level-142995.mp3"/>
+        <MediaElement x:Name="placingWater" LoadedBehavior="Manual" Source="H:\Project\CupFilling\sounds\object-drops-in-water-84639.mp3"/>
         <StackPanel>
             <TextBlock x:Name="remainingWaterText" Text="{Binding Path=WaterAmount}" HorizontalAlignment="Left" VerticalAlignment="Top" FontFamily="{StaticResource DefaultFont}" FontSize="20"/>
             <ProgressBar Name="cupFilling" Width="200" Height="20" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="100, 0" Minimum="0" Maximum="10"/>
             <TextBlock Name="progress" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="160, 0" FontFamily="{StaticResource DefaultFont}" FontSize="20"/>
         </StackPanel>
 
-        <Button Name="NextLevelButton" Content="Next Level" Height="50" Width="100"
-                HorizontalAlignment="Right"
-                VerticalAlignment="Bottom"
-                Margin="50" Click="NextLevelButton_Click" 
-                Background="#FF64CCF1" 
-                Foreground="White" 
-                FontFamily="{StaticResource DefaultFont}" 
-                FontSize="20"/>
         <Canvas Name="FirstLevelCanvas" Height="1900" Width="700" Background="White">
             <Rectangle Tag="wall"  Width="100" Height="5" Fill="Gray" Canvas.Left="76" Canvas.Top="265" HorizontalAlignment="Left" VerticalAlignment="Top">
                 <Rectangle.RenderTransform>
@@ -203,7 +197,7 @@
                     <RotateTransform Angle="135"/>
                 </Rectangle.RenderTransform>
             </Rectangle>
-            <Image x:Name="Cup" Source="H:\Project\CupFilling\images\Cup0.jpg"  Height="150" Width="150" Canvas.Left="275" Canvas.Top="662"/>
+            <Image x:Name="Cup" Source="H:\Project\CupFilling\images\Cup0.jpg"  Height="100" Width="100" Canvas.Left="315" Canvas.Top="684"/>
         </Canvas>
     </Grid>
 </Window>

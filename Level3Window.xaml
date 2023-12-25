@@ -72,6 +72,9 @@
     </Window.Resources>
 
     <Grid>
+        <MediaElement x:Name="waterDrop" LoadedBehavior="Manual" Source="H:\\Project\\CupFilling\\sounds\\water-drop.mp3"/>
+        <MediaElement x:Name="levelFinished" LoadedBehavior="Manual" Source="H:\Project\CupFilling\sounds\new-level-142995.mp3"/>
+        <MediaElement x:Name="placingWater" LoadedBehavior="Manual" Source="H:\Project\CupFilling\sounds\object-drops-in-water-84639.mp3"/>
         <StackPanel>
             <TextBlock x:Name="remainingWaterText" Text="{Binding Path=WaterAmount}" FontFamily="{StaticResource DefaultFont}" FontSize="20"/>
             <ProgressBar Name="cupFilling" Width="200" Height="20" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="100, 0" Minimum="0" Maximum="10"/>
@@ -180,7 +183,7 @@
                 </Rectangle.RenderTransform>
             </Rectangle>
 
-            <Image x:Name="Cup" Source="H:\Project\CupFilling\images\Cup0.jpg"  Height="150" Width="150" Canvas.Left="99" Canvas.Top="663"/>
+            <Image x:Name="Cup" Source="H:\Project\CupFilling\images\Cup0.jpg"  Height="100" Width="100" Canvas.Left="115" Canvas.Top="657"/>
         </Canvas>
     </Grid>
 
