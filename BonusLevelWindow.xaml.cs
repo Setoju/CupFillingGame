@@ -20,8 +20,7 @@ namespace CupFilling
         private byte imagePointer = 0;
         private Cup bonusLevelCup = new Cup(10);     
         private Random rnd = new Random();
-        private Timer randomTimer = new Timer();
-        private Point lastMousePosition;       
+        private Timer randomTimer = new Timer();              
         public BonusLevelWindow()
         {
             InitializeComponent();            
@@ -47,25 +46,12 @@ namespace CupFilling
             randomTimer.Interval = interval;
             randomTimer.Start();
         }
-        // Checking for pressing the mouse on the cup to move it by x axis
-        private void Window_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            if (e.ChangedButton == MouseButton.Left)
-            {                
-                lastMousePosition = e.GetPosition(BonusLevelCanvas);
-            }
-        }
+        // Checking for pressing the mouse on the cup to move it by x axis        
         private void Window_MouseMove(object sender, MouseEventArgs e)
         {
             if (e.LeftButton == MouseButtonState.Pressed)
-            {
-                Point newMousePosition = e.GetPosition(BonusLevelCanvas);
-                
-                double deltaX = newMousePosition.X - lastMousePosition.X;
-                
-                Canvas.SetLeft(Cup, Canvas.GetLeft(Cup) + deltaX);
-
-                lastMousePosition = newMousePosition;
+            {                
+                Canvas.SetLeft(Cup, e.GetPosition(BonusLevelCanvas).X);                
             }
         }
        
