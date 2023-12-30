@@ -7,7 +7,8 @@
         mc:Ignorable="d"   
         Icon="H:\Project\CupFilling\images\icon.ico"
         Title="BonusLevel" Height="1920" Width="1080" WindowState="Maximized"
-        MouseMove="Window_MouseMove"        
+        MouseMove="Window_MouseMove"
+        MouseDown="Window_MouseDown"
         >
     <Window.Resources>
         <ResourceDictionary>

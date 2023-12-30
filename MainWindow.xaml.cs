@@ -98,7 +98,7 @@ namespace CupFilling
 
                     // Creating a rotated bounding box for the ball
                     Rect rotatedBallBounds = new Rect(rotatedX - ballBounds.Width / 2, rotatedY - ballBounds.Height / 2, ballBounds.Width, ballBounds.Height);
-
+                    
                     // Checking for intersection between the rotated ball and the rotated wall
                     if (rotatedBallBounds.IntersectsWith(new Rect(Canvas.GetLeft(x), Canvas.GetTop(x), x.Width, x.Height)))
                     {
@@ -137,7 +137,7 @@ namespace CupFilling
     }       
     public class GameCompletion
     {
-        private bool[] _isLevelAvailable = { false, true, true, true };
+        private bool[] _isLevelAvailable = { false, false, false, false};
         
         public bool this[int index]
         {
