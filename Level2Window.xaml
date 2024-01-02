@@ -80,7 +80,7 @@
             <ProgressBar Name="cupFilling" Width="200" Height="20" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="100, 0" Minimum="0" Maximum="10"/>
             <TextBlock Name="progress" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="160, 0" FontFamily="{StaticResource DefaultFont}" FontSize="20"/>
         </StackPanel>
-        
+
         <Canvas Name="SecondLevelCanvas" Height="1900" Width="700" Background="White">
             <Rectangle Tag="wall"  Width="100" Height="5" Fill="Gray" Canvas.Left="666" Canvas.Top="381" HorizontalAlignment="Left" VerticalAlignment="Center">
                 <Rectangle.RenderTransform>
@@ -208,7 +208,7 @@
                 </Rectangle.RenderTransform>
             </Rectangle>
 
-            <Image x:Name="Cup" Source="H:\Project\CupFilling\images\Cup0.jpg"  Height="100" Width="100" Canvas.Left="430" Canvas.Top="667"/>
+            <Image x:Name="Cup" Source="H:\Project\CupFilling\images\Cup0.jpg"  Height="100" Width="100" Canvas.Left="422" Canvas.Top="666"/>
         </Canvas>
 
     </Grid>
